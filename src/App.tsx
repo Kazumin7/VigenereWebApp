@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { Lock, Unlock, Copy, Check } from 'lucide-react';
 
 const VigenereCipher: React.FC = () => {
+  const [key, setKey] = useState('');
   const [encodeText, setEncodeText] = useState('');
-  const [encodeKey, setEncodeKey] = useState('');
   const [encodeResult, setEncodeResult] = useState('');
   const [decodeText, setDecodeText] = useState('');
-  const [decodeKey, setDecodeKey] = useState('');
   const [decodeResult, setDecodeResult] = useState('');
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
   const [copied, setCopied] = useState(false);
@@ -47,22 +46,22 @@ const VigenereCipher: React.FC = () => {
   };
 
   const handleEncodeProcess = () => {
-    if (!encodeText || !encodeKey) {
+    if (!encodeText || !key) {
       setEncodeResult('');
       return;
     }
     
-    const processed = processText(encodeText, encodeKey, true);
+    const processed = processText(encodeText, key, true);
     setEncodeResult(processed);
   };
 
   const handleDecodeProcess = () => {
-    if (!decodeText || !decodeKey) {
+    if (!decodeText || !key) {
       setDecodeResult('');
       return;
     }
     
-    const processed = processText(decodeText, decodeKey, false);
+    const processed = processText(decodeText, key, false);
     setDecodeResult(processed);
   };
 
@@ -85,7 +84,7 @@ const VigenereCipher: React.FC = () => {
     } else {
       handleDecodeProcess();
     }
-  }, [encodeText, encodeKey, decodeText, decodeKey, mode]);
+  }, [key, encodeText, decodeText, mode]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
@@ -134,8 +133,8 @@ const VigenereCipher: React.FC = () => {
               </label>
               <input
                 type="text"
-                value={mode === 'encode' ? encodeKey : decodeKey}
-                onChange={(e) => mode === 'encode' ? setEncodeKey(e.target.value) : setDecodeKey(e.target.value)}
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
                 placeholder="Enter your key (e.g., SECRET)"
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-lg"
               />
