@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Lock, Unlock, Copy, Check } from 'lucide-react';
 
+import { autokeyCipher as cipher } from './utils/cipher';
+
 const VigenereCipher: React.FC = () => {
   const [key, setKey] = useState('');
   const [encodeText, setEncodeText] = useState('');
@@ -10,48 +12,13 @@ const VigenereCipher: React.FC = () => {
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
   const [copied, setCopied] = useState(false);
 
-  const processText = (input: string, keyword: string, encode: boolean): string => {
-    if (!keyword) return input;
-    
-    const normalizedKey = keyword.toUpperCase().replace(/[^A-Z]/g, '');
-    if (normalizedKey.length === 0) return input;
-    
-    let result = '';
-    let keyIndex = 0;
-    
-    for (let i = 0; i < input.length; i++) {
-      const char = input[i];
-      
-      if (/[A-Za-z]/.test(char)) {
-        const isUpperCase = char === char.toUpperCase();
-        const charCode = char.toUpperCase().charCodeAt(0) - 65;
-        const keyChar = normalizedKey[keyIndex % normalizedKey.length].charCodeAt(0) - 65;
-        
-        let newCharCode;
-        if (encode) {
-          newCharCode = (charCode + keyChar) % 26;
-        } else {
-          newCharCode = (charCode - keyChar + 26) % 26;
-        }
-        
-        const newChar = String.fromCharCode(newCharCode + 65);
-        result += isUpperCase ? newChar : newChar.toLowerCase();
-        keyIndex++;
-      } else {
-        result += char;
-      }
-    }
-    
-    return result;
-  };
-
   const handleEncodeProcess = () => {
     if (!encodeText || !key) {
       setEncodeResult('');
       return;
     }
     
-    const processed = processText(encodeText, key, true);
+    const processed = cipher(encodeText, key, true);
     setEncodeResult(processed);
   };
 
@@ -61,7 +28,7 @@ const VigenereCipher: React.FC = () => {
       return;
     }
     
-    const processed = processText(decodeText, key, false);
+    const processed = cipher(decodeText, key, false);
     setDecodeResult(processed);
   };
 
@@ -92,7 +59,7 @@ const VigenereCipher: React.FC = () => {
         <div className="bg-white rounded-2xl shadow-2xl p-8 mt-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800 mb-2">
-              Vigenère Cipher
+              Vigenère Autokey Cipher
             </h1>
             <p className="text-gray-600">
               A classic polyalphabetic substitution cipher
@@ -129,7 +96,7 @@ const VigenereCipher: React.FC = () => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Key (Letters only)
+                Key Primer (Letters only)
               </label>
               <input
                 type="text"
@@ -189,10 +156,10 @@ const VigenereCipher: React.FC = () => {
           <div className="mt-8 p-4 bg-gray-50 rounded-lg">
             <h3 className="font-semibold text-gray-700 mb-2">How it works:</h3>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>• The Vigenère cipher uses a keyword to shift letters in the alphabet</li>
+              <li>• The Vigenère cipher uses a key to shift letters in the alphabet</li>
+              <li>• The plaintext itself is appended to the given key primer to make the key</li>
               <li>• Each letter in the key determines how many positions to shift</li>
               <li>• Non-alphabetic characters (spaces, punctuation) remain unchanged</li>
-              <li>• The key repeats if it's shorter than the message</li>
             </ul>
             <h3 className="font-semibold text-gray-700 mb-2 mt-10 text-center">Application created by Rohan Iyer</h3>
           </div>
