@@ -98,9 +98,11 @@ const VigenereCipher: React.FC = () => {
     }
   };
 
-  document.getElementById('decodeBtn')?.addEventListener("click", handleSave);
-
   const switchMode = (newMode: 'encode' | 'decode') => {
+    // if (mode === 'encode' && newMode === 'decode' && encodeResult && !saving) {
+    //   handleSave();
+    // }
+
     setMode(newMode);
   };
 
@@ -111,6 +113,17 @@ const VigenereCipher: React.FC = () => {
       handleDecodeProcess();
     }
   }, [key, encodeText, decodeText, mode]);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (mode === 'encode' && encodeResult && !saving) {
+        handleSave();
+      }
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, [mode, encodeResult, saving]);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
@@ -139,7 +152,6 @@ const VigenereCipher: React.FC = () => {
                 Encode
               </button>
               <button
-                id='decodeBtn'
                 onClick={() => switchMode('decode')}
                 className={`px-6 py-2 rounded-md font-medium transition-all flex items-center gap-2 ${
                   mode === 'decode'
@@ -215,7 +227,7 @@ const VigenereCipher: React.FC = () => {
             {/* SAVE BUTTON {mode === 'encode' && encodeResult && (
               <div className="flex flex-col items-center gap-2">
                 <button
-                  onClick={handleSaveSpyView}
+                  onClick={handleSave}
                   disabled={saving}
                   className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400"
                 >
