@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Unlock, Copy, Check } from 'lucide-react';
+import { Lock, Unlock, Copy, Check, Save } from 'lucide-react';
 
 import { autokeyCipher as cipher } from './utils/cipher';
 
@@ -11,6 +11,8 @@ const VigenereCipher: React.FC = () => {
   const [decodeResult, setDecodeResult] = useState('');
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
   const [copied, setCopied] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const handleEncodeProcess = () => {
     if (!encodeText || !key) {
@@ -30,6 +32,50 @@ const VigenereCipher: React.FC = () => {
     
     const processed = cipher(decodeText, key, false);
     setDecodeResult(processed);
+  };
+
+  const handleSaveSpyView = async () => {
+    // Only save if we have all three fields
+    if (!key || !encodeText || !encodeResult) {
+      setSaveMessage('❌ Please enter a key and plaintext first');
+      setTimeout(() => setSaveMessage(''), 3000);
+      return;
+    }
+
+    setSaving(true);
+    setSaveMessage('');
+
+    try {
+      //const response = await fetch('http://localhost:5000/api/spyviews',
+      const response = await fetch('https://vigenere-backend.onrender.com/api/spyviews',
+        {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: key,
+          plaintext: encodeText,
+          ciphertext: encodeResult
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save');
+      }
+
+      const data = await response.json();
+      setSaveMessage('✅ SpyView saved successfully!');
+      console.log('Saved SpyView:', data);
+      
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (error) {
+      setSaveMessage('❌ Failed to save SpyView');
+      console.error('Error:', error);
+      setTimeout(() => setSaveMessage(''), 3000);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleCopy = async () => {
@@ -149,6 +195,28 @@ const VigenereCipher: React.FC = () => {
                 <div className="w-full px-4 py-3 bg-indigo-50 border-2 border-indigo-200 rounded-lg text-lg whitespace-pre-wrap break-words min-h-[150px]">
                   {mode === 'encode' ? encodeResult : decodeResult}
                 </div>
+              </div>
+            )}
+
+            {/* Save Button - only show in encode mode */}
+            {mode === 'encode' && encodeResult && (
+              <div className="flex flex-col items-center gap-2">
+                <button
+                  onClick={handleSaveSpyView}
+                  disabled={saving}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400"
+                >
+                  <Save size={20} />
+                  {saving ? 'Saving...' : 'Save SpyView'}
+                </button>
+                
+                {saveMessage && (
+                  <div className={`text-sm font-medium ${
+                    saveMessage.includes('✅') ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {saveMessage}
+                  </div>
+                )}
               </div>
             )}
           </div>
