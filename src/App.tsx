@@ -86,6 +86,20 @@ const VigenereCipher: React.FC = () => {
     }
   };
 
+  const handleClearKey = () => {
+    setKey('');
+  };
+
+  const handleClearText = () => {
+    if (mode === 'encode') {
+      setEncodeText('');
+    } else {
+      setDecodeText('');
+    }
+  };
+
+  document.getElementById('decodeBtn')?.addEventListener("click", handleSaveSpyView);
+
   const switchMode = (newMode: 'encode' | 'decode') => {
     setMode(newMode);
   };
@@ -97,8 +111,6 @@ const VigenereCipher: React.FC = () => {
       handleDecodeProcess();
     }
   }, [key, encodeText, decodeText, mode]);
-
-  document.getElementById('decodeBtn')?.addEventListener("click", handleSaveSpyView);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
@@ -146,13 +158,21 @@ const VigenereCipher: React.FC = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Key Primer (Letters only)
               </label>
-              <input
-                type="text"
-                value={key}
-                onChange={(e) => setKey(e.target.value)}
-                placeholder="Enter your key (e.g., SECRET)"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-lg"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={key}
+                  onChange={(e) => setKey(e.target.value)}
+                  placeholder="Enter your key (e.g., SECRET)"
+                  className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-lg"
+                />
+                <button
+                  onClick={handleClearKey}
+                  className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
               <p className="text-xs text-gray-500 mt-1">
                 Only letters will be used. Non-alphabetic characters will be ignored.
               </p>
@@ -162,14 +182,27 @@ const VigenereCipher: React.FC = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 {mode === 'encode' ? 'Plain Text' : 'Cipher Text'}
               </label>
-              <textarea
-                value={mode === 'encode' ? encodeText : decodeText}
-                onChange={(e) => mode === 'encode' ? setEncodeText(e.target.value) : setDecodeText(e.target.value)}
-                placeholder={`Enter text to ${mode}...`}
-                rows={6}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none text-lg"
-              />
+              <div className="flex gap-2">
+                <textarea
+                  value={mode === 'encode' ? encodeText : decodeText}
+                  onChange={(e) =>
+                    mode === 'encode'
+                      ? setEncodeText(e.target.value)
+                      : setDecodeText(e.target.value)
+                  }
+                  placeholder={`Enter text to ${mode}...`}
+                  rows={6}
+                  className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none text-lg"
+                />
+                <button
+                  onClick={handleClearText}
+                  className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg h-fit self-start transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
             </div>
+
 
             {(mode === 'encode' ? encodeResult : decodeResult) && (
               <div>
