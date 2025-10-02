@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Unlock, Copy, Check, Save, X } from 'lucide-react';
+import { Lock, Unlock, Copy, Check, Save } from 'lucide-react';
 
 import { autokeyCipher as cipher } from './utils/cipher';
 
@@ -34,7 +34,7 @@ const VigenereCipher: React.FC = () => {
     setDecodeResult(processed);
   };
 
-  const handleSaveSpyView = async () => {
+  const handleSave = async () => {
     if (!key || !encodeText || !encodeResult) {
       return;
     }
@@ -98,7 +98,7 @@ const VigenereCipher: React.FC = () => {
     }
   };
 
-  document.getElementById('decodeBtn')?.addEventListener("click", handleSaveSpyView);
+  document.getElementById('decodeBtn')?.addEventListener("click", handleSave);
 
   const switchMode = (newMode: 'encode' | 'decode') => {
     setMode(newMode);
@@ -153,57 +153,35 @@ const VigenereCipher: React.FC = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Key Primer (Letters only)
-            </label>
-            <div className="flex items-center gap-2">
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Key Primer (Letters only)
+              </label>
               <input
                 type="text"
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
                 placeholder="Enter your key (e.g., SECRET)"
-                className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-lg"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-lg"
               />
-              <button
-                onClick={handleClearKey}
-                className="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors flex items-center justify-center"
-                title="Clear Key"
-              >
-                <X size={18} className="text-gray-600" />
-              </button>
+              <p className="text-xs text-gray-500 mt-1">
+                Only letters will be used. Non-alphabetic characters will be ignored.
+              </p>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Only letters will be used. Non-alphabetic characters will be ignored.
-            </p>
-          </div>
 
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              {mode === 'encode' ? 'Plain Text' : 'Cipher Text'}
-            </label>
-            <div className="flex gap-2">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {mode === 'encode' ? 'Plain Text' : 'Cipher Text'}
+              </label>
               <textarea
                 value={mode === 'encode' ? encodeText : decodeText}
-                onChange={(e) =>
-                  mode === 'encode'
-                    ? setEncodeText(e.target.value)
-                    : setDecodeText(e.target.value)
-                }
+                onChange={(e) => mode === 'encode' ? setEncodeText(e.target.value) : setDecodeText(e.target.value)}
                 placeholder={`Enter text to ${mode}...`}
                 rows={6}
-                className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none text-lg"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none text-lg"
               />
-              <button
-                onClick={handleClearText}
-                className="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors flex items-center justify-center self-start"
-                title="Clear Text"
-              >
-                <X size={18} className="text-gray-600" />
-              </button>
             </div>
-          </div>
 
             {(mode === 'encode' ? encodeResult : decodeResult) && (
               <div>
