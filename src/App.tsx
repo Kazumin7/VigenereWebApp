@@ -61,6 +61,8 @@ const VigenereCipher: React.FC = () => {
       });
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Backend error:', errorData);
         throw new Error('Failed to save');
       }
 
