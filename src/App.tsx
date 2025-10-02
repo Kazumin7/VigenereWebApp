@@ -249,9 +249,9 @@ const VigenereCipher: React.FC = () => {
           <div className="mt-8 p-4 bg-gray-50 rounded-lg">
             <h3 className="font-semibold text-gray-700 mb-2">How it works:</h3>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>• The Vigenère cipher uses a key to shift letters in the alphabet</li>
-              <li>• The plaintext itself is appended to the given key primer to make the key</li>
-              <li>• Each letter in the key determines how many positions to shift</li>
+              <li>• The secret key is used to encrypt the plaintext</li>
+              <li>• To decrypt the resulting ciphertext, the key is necessary</li>
+              <li>• Each letter in the key determines how many 'positions' to shift</li>
               <li>• Non-alphabetic characters (spaces, punctuation) remain unchanged</li>
             </ul>
             <h3 className="font-semibold text-gray-700 mb-2 mt-10 text-center">Application created by Rohan Iyer</h3>
