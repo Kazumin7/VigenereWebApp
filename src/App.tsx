@@ -250,7 +250,7 @@ const VigenereCipher: React.FC = () => {
             <h3 className="font-semibold text-gray-700 mb-2">How it works:</h3>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>• The secret key is used to encrypt the plaintext</li>
-              <li>• To decrypt the resulting ciphertext, the key is necessary</li>
+              <li>• To decrypt the resulting ciphertext, the same key is necessary</li>
               <li>• Each letter in the key determines how many 'positions' to shift</li>
               <li>• Non-alphabetic characters (spaces, punctuation) remain unchanged</li>
             </ul>
