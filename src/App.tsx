@@ -35,10 +35,7 @@ const VigenereCipher: React.FC = () => {
   };
 
   const handleSaveSpyView = async () => {
-    // Only save if we have all three fields
     if (!key || !encodeText || !encodeResult) {
-      setSaveMessage('❌ Please enter a key and plaintext first');
-      setTimeout(() => setSaveMessage(''), 3000);
       return;
     }
 
@@ -101,6 +98,8 @@ const VigenereCipher: React.FC = () => {
     }
   }, [key, encodeText, decodeText, mode]);
 
+  document.getElementById('decodeBtn')?.addEventListener("click", handleSaveSpyView);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
       <div className="max-w-4xl mx-auto">
@@ -128,6 +127,7 @@ const VigenereCipher: React.FC = () => {
                 Encode
               </button>
               <button
+                id='decodeBtn'
                 onClick={() => switchMode('decode')}
                 className={`px-6 py-2 rounded-md font-medium transition-all flex items-center gap-2 ${
                   mode === 'decode'
@@ -200,8 +200,7 @@ const VigenereCipher: React.FC = () => {
               </div>
             )}
 
-            {/* Save Button - only show in encode mode */}
-            {mode === 'encode' && encodeResult && (
+            {/* SAVE BUTTON {mode === 'encode' && encodeResult && (
               <div className="flex flex-col items-center gap-2">
                 <button
                   onClick={handleSaveSpyView}
@@ -220,7 +219,7 @@ const VigenereCipher: React.FC = () => {
                   </div>
                 )}
               </div>
-            )}
+            )} */}
           </div>
 
           <div className="mt-8 p-4 bg-gray-50 rounded-lg">
