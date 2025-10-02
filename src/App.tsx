@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Unlock, Copy, Check, Save } from 'lucide-react';
+import { Lock, Unlock, Copy, Check, Save, X } from 'lucide-react';
 
 import { autokeyCipher as cipher } from './utils/cipher';
 
@@ -153,56 +153,57 @@ const VigenereCipher: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Key Primer (Letters only)
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={key}
-                  onChange={(e) => setKey(e.target.value)}
-                  placeholder="Enter your key (e.g., SECRET)"
-                  className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-lg"
-                />
-                <button
-                  onClick={handleClearKey}
-                  className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-                >
-                  Clear
-                </button>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Only letters will be used. Non-alphabetic characters will be ignored.
-              </p>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Key Primer (Letters only)
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
+                placeholder="Enter your key (e.g., SECRET)"
+                className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-lg"
+              />
+              <button
+                onClick={handleClearKey}
+                className="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors flex items-center justify-center"
+                title="Clear Key"
+              >
+                <X size={18} className="text-gray-600" />
+              </button>
             </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Only letters will be used. Non-alphabetic characters will be ignored.
+            </p>
+          </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                {mode === 'encode' ? 'Plain Text' : 'Cipher Text'}
-              </label>
-              <div className="flex gap-2">
-                <textarea
-                  value={mode === 'encode' ? encodeText : decodeText}
-                  onChange={(e) =>
-                    mode === 'encode'
-                      ? setEncodeText(e.target.value)
-                      : setDecodeText(e.target.value)
-                  }
-                  placeholder={`Enter text to ${mode}...`}
-                  rows={6}
-                  className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none text-lg"
-                />
-                <button
-                  onClick={handleClearText}
-                  className="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg h-fit self-start transition-colors"
-                >
-                  Clear
-                </button>
-              </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              {mode === 'encode' ? 'Plain Text' : 'Cipher Text'}
+            </label>
+            <div className="flex gap-2">
+              <textarea
+                value={mode === 'encode' ? encodeText : decodeText}
+                onChange={(e) =>
+                  mode === 'encode'
+                    ? setEncodeText(e.target.value)
+                    : setDecodeText(e.target.value)
+                }
+                placeholder={`Enter text to ${mode}...`}
+                rows={6}
+                className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none text-lg"
+              />
+              <button
+                onClick={handleClearText}
+                className="p-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors flex items-center justify-center self-start"
+                title="Clear Text"
+              >
+                <X size={18} className="text-gray-600" />
+              </button>
             </div>
-
+          </div>
 
             {(mode === 'encode' ? encodeResult : decodeResult) && (
               <div>
