@@ -117,7 +117,7 @@ const VigenereCipher: React.FC = () => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (mode === 'encode' && encodeResult && !saving) {
-        handleSave();
+        //SAVE HERE NORMALLYhandleSave();
       }
     }, 7000);
 
