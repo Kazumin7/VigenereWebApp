@@ -47,12 +47,11 @@ const VigenereCipher: React.FC = () => {
 
     try {
       //const response = await fetch('http://localhost:5000/api/spyviews',
-      const response = await fetch('https://vigenere-backend.onrender.com/api/spyviews',
+      const response = await fetch('https://vigenere-backend.onrender.com/proxy/spyviews',
         {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           key: key,
