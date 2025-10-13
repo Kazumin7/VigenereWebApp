@@ -34,9 +34,6 @@ const VigenereCipher: React.FC = () => {
     setDecodeResult(processed);
   };
 
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY!;
-  if (!apiKey) throw new Error('API key missing');
-
   const handleSave = async () => {
     if (!key || !encodeText || !encodeResult) {
       return;
