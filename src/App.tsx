@@ -49,6 +49,7 @@ const VigenereCipher: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': process.env.NEXT_PUBLIC_API_KEY!
         },
         body: JSON.stringify({
           key: key,
@@ -117,9 +118,9 @@ const VigenereCipher: React.FC = () => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (mode === 'encode' && encodeResult && !saving) {
-        //SAVE HERE NORMALLYhandleSave();
+        handleSave();
       }
-    }, 7000);
+    }, 7777);
 
     return () => clearInterval(interval);
   }, [mode, encodeResult, saving]);
